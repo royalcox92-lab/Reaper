@@ -2,20 +2,16 @@ FROM node:latest
 
 WORKDIR /app
 
-COPY . /app/
-
-COPY package*.json /app/
+# Install dependencies first (better caching)
+COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
-
-RUN pnpm config set ignore-scripts false
-
-RUN pnpm rebuild
-
 RUN pnpm install
 
-RUN mkdir -p /app/node_modules/.pnpm/@rubynetwork+rh@1.2.71_bufferutil@4.0.8/node_modules/@rubynetwork/rh/cache-js
+# Copy rest of app
+COPY . .
 
+# Build app
 RUN pnpm run build
 
 EXPOSE 8080
