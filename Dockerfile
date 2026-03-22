@@ -8,11 +8,13 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
 
-# Install deps
+# allow scripts BEFORE install (important)
+RUN pnpm config set ignore-scripts false
+
 RUN pnpm install --frozen-lockfile
 
-# ✅ THIS is the missing piece
-RUN pnpm approve-builds
+# ✅ force approve (non-interactive)
+RUN pnpm approve-builds --all
 
 COPY . .
 
@@ -20,4 +22,4 @@ RUN pnpm run build
 
 EXPOSE 8080
 
-CMD ["pnpm", "start"]]
+CMD ["pnpm", "start"]
