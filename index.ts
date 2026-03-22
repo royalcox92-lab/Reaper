@@ -18,7 +18,7 @@ if (!fs.existsSync("build")) {
 	console.log("Built!");
 }
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use(express.static("build"));
 
@@ -32,27 +32,8 @@ app.use((req: Request, res: Response) => {
 	}
 });
 
-listen(port, () => {
-	const theme = chalk.hex(
-		themes.filter((theme) => (theme.id = "default"))[0].theme.primary
-	);
-	console.log(`${chalk.bold(theme("Metallic"))}`);
+const port = process.env.PORT || 8080;
 
-	console.log(`- ${chalk.bold("Local:")} http://localhost:${port}`);
-
-	if (process.env.REPL_SLUG && process.env.REPL_OWNER) {
-		console.log(
-			`- ${chalk.bold("Replit:")} https://${process.env.REPL_SLUG}.${
-				process.env.REPL_OWNER
-			}.repl.co`
-		);
-	}
-
-	if (process.env.HOSTNAME && process.env.GITPOD_WORKSPACE_CLUSTER_HOST) {
-		console.log(
-			`- ${chalk.bold("Gitpod:")} https://${port}-${process.env.HOSTNAME}.${
-				process.env.GITPOD_WORKSPACE_CLUSTER_HOST
-			}`
-		);
-	}
+listen(port, "0.0.0.0", () => {
+  console.log(`Server running on port ${port}`);
 });
